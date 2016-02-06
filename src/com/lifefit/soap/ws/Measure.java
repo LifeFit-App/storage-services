@@ -19,6 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="idMeasure" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="measureName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="measureType" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="goalFlag" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -31,13 +32,15 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "measure", propOrder = {
     "idMeasure",
     "measureName",
-    "measureType"
+    "measureType",
+    "goalFlag"
 })
 public class Measure {
 
     protected int idMeasure;
     protected String measureName;
     protected String measureType;
+    protected String goalFlag;
 
     /**
      * Gets the value of the idMeasure property.
@@ -101,6 +104,30 @@ public class Measure {
      */
     public void setMeasureType(String value) {
         this.measureType = value;
+    }
+
+    /**
+     * Gets the value of the goalFlag property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getGoalFlag() {
+        return goalFlag;
+    }
+
+    /**
+     * Sets the value of the goalFlag property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setGoalFlag(String value) {
+        this.goalFlag = value;
     }
 
 }

@@ -8,7 +8,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
-import com.lifefit.soap.client.LifeFitClient;
+import com.lifefit.soap.client.local.LifeFitLocalClient;
 import com.lifefit.soap.ws.Person;
 
 public class PersonResource {
@@ -29,7 +29,7 @@ public class PersonResource {
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Person getPerson() {
     	
-    	LifeFitClient client = new LifeFitClient();    	
+    	LifeFitLocalClient client = new LifeFitLocalClient();    	
         Person person = client.getPersonById(id);             
         if (person == null){
         	System.out.println("Get: Person with " + id + " not found");    

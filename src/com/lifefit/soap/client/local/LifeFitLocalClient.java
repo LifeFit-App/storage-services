@@ -1,4 +1,4 @@
-package com.lifefit.soap.client;
+package com.lifefit.soap.client.local;
 
 import java.util.List;
 
@@ -10,9 +10,9 @@ import com.lifefit.soap.ws.LifeStatus;
 import com.lifefit.soap.ws.Measure;
 import com.lifefit.soap.ws.Person;
 
-public class LifeFitClient {
+public class LifeFitLocalClient {
 	
-	public LifeFitClient(){}
+	public LifeFitLocalClient(){}
 	
 	public Person getPersonById(int personId){
 		Person person = null;
@@ -31,7 +31,7 @@ public class LifeFitClient {
 		return person;
 	}
 	
-	public List<Measure> getMeasureTypes(){
+	public List<Measure> getMeasureTypes(String param1){
 		List<Measure> measureTypes = null;
 		
 		try{
@@ -39,8 +39,8 @@ public class LifeFitClient {
 			LifeFit lifefit = service.getLifeFitImplPort();
 			
 			//Invoking SOAP WS of local-db services
-			System.out.println("Invoking SOAP WS of local-db services: getMeasureTypeList()");
-			measureTypes = lifefit.getMeasureTypeList();
+			System.out.println("Invoking SOAP WS of local-db services: getMeasureTypeList("+param1+")");
+			measureTypes = lifefit.getMeasureTypeList(param1);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -63,14 +63,25 @@ public class LifeFitClient {
 		return goal;
 	}
 	
-	public boolean updatePersonGoal(int personId, Goal goal){
-		
+	public boolean updatePersonGoal(Goal goal, int personId){		
 		LifeFitService service = new LifeFitService();
 		LifeFit lifefit = service.getLifeFitImplPort();
 		
 		//Invoking SOAP WS of local-db services
 		System.out.println("Invoking SOAP WS of local-db services: updatePersonGoal("+personId+")");
 		if(lifefit.updatePersonGoal(goal, personId))
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean savePersonGoal(Goal goal, int personId){		
+		LifeFitService service = new LifeFitService();
+		LifeFit lifefit = service.getLifeFitImplPort();
+		
+		//Invoking SOAP WS of local-db services
+		System.out.println("Invoking SOAP WS of local-db services: savePersonGoal("+personId+")");
+		if(lifefit.savePersonGoal(goal, personId))
 			return true;
 		else
 			return false;
@@ -164,5 +175,22 @@ public class LifeFitClient {
 				+ "getLifeStatusByPersonAndMeasureId("+personId+","+measureId+")");
 		LifeStatus lifeStatus = lifefit.getPersonHealthMeasureById(personId, measureId);
 		return lifeStatus;		
+	}
+	
+	public String getAPIConfigByName(String name){
+		String endpoint = null;
+		
+		try{
+			LifeFitService service = new LifeFitService();
+			LifeFit lifefit = service.getLifeFitImplPort();
+			
+			//Invoking SOAP WS of local-db services
+			System.out.println("Invoking SOAP WS of local-db services: getAPIConfig("+name+")");
+			endpoint = lifefit.getAPIConfigByName(name);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}		
+		return endpoint;
 	}
 }

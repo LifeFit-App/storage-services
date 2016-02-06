@@ -7,16 +7,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for getMeasureTypeList complex type.
+ * <p>Java class for getAPIConfigByNameResponse complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="getMeasureTypeList">
+ * &lt;complexType name="getAPIConfigByNameResponse">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="arg0" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="endpoint" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -26,35 +26,35 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "getMeasureTypeList", propOrder = {
-    "arg0"
+@XmlType(name = "getAPIConfigByNameResponse", propOrder = {
+    "endpoint"
 })
-public class GetMeasureTypeList {
+public class GetAPIConfigByNameResponse {
 
-    protected String arg0;
+    protected String endpoint;
 
     /**
-     * Gets the value of the arg0 property.
+     * Gets the value of the endpoint property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getArg0() {
-        return arg0;
+    public String getEndpoint() {
+        return endpoint;
     }
 
     /**
-     * Sets the value of the arg0 property.
+     * Sets the value of the endpoint property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setArg0(String value) {
-        this.arg0 = value;
+    public void setEndpoint(String value) {
+        this.endpoint = value;
     }
 
 }

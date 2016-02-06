@@ -17,7 +17,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
 
-import com.lifefit.soap.client.LifeFitClient;
+import com.lifefit.soap.client.local.LifeFitLocalClient;
 import com.lifefit.soap.ws.Goal;
 import com.lifefit.soap.ws.HealthMeasureHistory;
 import com.lifefit.soap.ws.LifeStatus;
@@ -44,7 +44,7 @@ public class PersonCollectionResource {
     public List<HealthMeasureHistory> getPersonHealthMeasureHistory(@PathParam("personId") int personId, 
     		@PathParam("measureId") int measureId) {
     	
-    	LifeFitClient client = new LifeFitClient();
+    	LifeFitLocalClient client = new LifeFitLocalClient();
     	
     	List<HealthMeasureHistory> healthMeasureHistory = client.getHealthMeasureHistory(personId, measureId);
         return healthMeasureHistory;
@@ -55,7 +55,7 @@ public class PersonCollectionResource {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Goal getPersonGoal(@PathParam("personId") int personId) {
     	
-    	LifeFitClient client = new LifeFitClient();
+    	LifeFitLocalClient client = new LifeFitLocalClient();
     	
     	Goal personGoal = client.getPersonGoal(personId);
         return personGoal;
@@ -66,24 +66,39 @@ public class PersonCollectionResource {
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response updatePersonGoal(Goal goal, @PathParam("personId") int personId){
     	Response res;
-    	LifeFitClient client = new LifeFitClient();
+    	LifeFitLocalClient client = new LifeFitLocalClient();
     	
-    	if(client.updatePersonGoal(personId, goal)){
+    	if(client.updatePersonGoal(goal, personId)){
     		res = Response.created(uriInfo.getAbsolutePath()).build();   
     	}
     	else
     		throw new NotFoundException();
     	
     	return res;    	
-    }    
+    }
+    
+    @POST
+    @Path("{personId}/goal")
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response savePersonGoal(Goal goal, @PathParam("personId") int personId){
+    	Response res;
+    	LifeFitLocalClient client = new LifeFitLocalClient();
+    	
+    	if(client.savePersonGoal(goal, personId)){
+    		res = Response.created(uriInfo.getAbsolutePath()).build();   
+    	}
+    	else
+    		throw new NotFoundException();
+    	
+    	return res;    	
+    }
     
     @POST
     @Path("{personId}/hp")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response savePersonHealthMeasure(LifeStatus lifeStatus, @PathParam("personId") int personId){
     	Response res;
-    	LifeFitClient client = new LifeFitClient();
-    	
+    	LifeFitLocalClient client = new LifeFitLocalClient();  
     	if(client.savePersonHealthMeasure(lifeStatus, personId)){
     		res = Response.created(uriInfo.getAbsolutePath()).build();   
     	}
@@ -98,7 +113,7 @@ public class PersonCollectionResource {
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response updatePersonHealthMeasure(LifeStatus lifeStatus, @PathParam("personId") int personId){
     	Response res;
-    	LifeFitClient client = new LifeFitClient();
+    	LifeFitLocalClient client = new LifeFitLocalClient();
     	
     	if(client.updatePersonHealthMeasure(lifeStatus, personId)){
     		res = Response.ok().build();  
@@ -110,18 +125,20 @@ public class PersonCollectionResource {
     }
     
     @DELETE
-    @Path("{personId}/hp")
+    @Path("{personId}/hp/{measureId}")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response deletePersonHealthMeasure(LifeStatus lifeStatus, @PathParam("personId") int personId){
+    public Response deletePersonHealthMeasure(@PathParam("personId") int personId, 
+    		@PathParam("measureId") int measureId){
     	Response res;
-    	LifeFitClient client = new LifeFitClient();
+    	LifeFitLocalClient client = new LifeFitLocalClient();
+    	//get lifestatus by given personId and statusId
+    	LifeStatus lifeStatus = client.getLifeStatusByPersonAndMeasureId(personId, measureId);
     	
-    	if(client.deletePersonHealthMeasure(lifeStatus, personId)){
+		if(client.deletePersonHealthMeasure(lifeStatus, personId)){
     		res = Response.ok().build();
     	}
     	else
     		throw new NotFoundException();
-    	
     	return res;
     }
     
@@ -129,7 +146,7 @@ public class PersonCollectionResource {
     @Path("{email}/{pass}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Person authenticateUser(@PathParam("email") String email, @PathParam("pass") String pass){
-    	LifeFitClient client = new LifeFitClient();
+    	LifeFitLocalClient client = new LifeFitLocalClient();
     	
     	Person person = client.authenticateUser(email, pass);
     	return person;    	
@@ -140,7 +157,7 @@ public class PersonCollectionResource {
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response saveHealthMeasureHistory(HealthMeasureHistory healthMeasure){
     	Response res;
-    	LifeFitClient client = new LifeFitClient();
+    	LifeFitLocalClient client = new LifeFitLocalClient();
     	
     	if(client.saveHealthMeasureHistory(healthMeasure)){
     		res = Response.created(uriInfo.getAbsolutePath()).build();   
@@ -156,7 +173,7 @@ public class PersonCollectionResource {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public LifeStatus getLifeStatusByPersonAndMeasureId(@PathParam("personId") int personId,
     		@PathParam("measureId") int measureId){
-    	LifeFitClient client = new LifeFitClient();
+    	LifeFitLocalClient client = new LifeFitLocalClient();
     	LifeStatus lifeStatus = client.getLifeStatusByPersonAndMeasureId(personId, measureId);
     	return lifeStatus;
     }
