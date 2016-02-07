@@ -42,6 +42,18 @@ public interface LifeFit {
 
     /**
      * 
+     * @return
+     *     returns java.util.List<com.lifefit.soap.ws.Person>
+     */
+    @WebMethod
+    @WebResult(name = "people", targetNamespace = "")
+    @RequestWrapper(localName = "getPeopleList", targetNamespace = "http://ws.soap.lifefit.com/", className = "com.lifefit.soap.ws.GetPeopleList")
+    @ResponseWrapper(localName = "getPeopleListResponse", targetNamespace = "http://ws.soap.lifefit.com/", className = "com.lifefit.soap.ws.GetPeopleListResponse")
+    @Action(input = "http://ws.soap.lifefit.com/LifeFit/getPeopleListRequest", output = "http://ws.soap.lifefit.com/LifeFit/getPeopleListResponse")
+    public List<Person> getPeopleList();
+
+    /**
+     * 
      * @param arg0
      * @return
      *     returns java.util.List<com.lifefit.soap.ws.Measure>
@@ -54,18 +66,6 @@ public interface LifeFit {
     public List<Measure> getMeasureTypeList(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
-
-    /**
-     * 
-     * @return
-     *     returns java.util.List<com.lifefit.soap.ws.Person>
-     */
-    @WebMethod
-    @WebResult(name = "people", targetNamespace = "")
-    @RequestWrapper(localName = "getPeopleList", targetNamespace = "http://ws.soap.lifefit.com/", className = "com.lifefit.soap.ws.GetPeopleList")
-    @ResponseWrapper(localName = "getPeopleListResponse", targetNamespace = "http://ws.soap.lifefit.com/", className = "com.lifefit.soap.ws.GetPeopleListResponse")
-    @Action(input = "http://ws.soap.lifefit.com/LifeFit/getPeopleListRequest", output = "http://ws.soap.lifefit.com/LifeFit/getPeopleListResponse")
-    public List<Person> getPeopleList();
 
     /**
      * 
